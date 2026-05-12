@@ -1,0 +1,23 @@
+name: Sync to Project Board
+
+on:
+  push:
+    branches: [main, master]
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 更新看板卡片
+        run: |
+          curl -s -X POST \
+            "https://project-board-worker.fishandy1213.workers.dev/api/card" \
+            -H "Content-Type: application/json" \
+            -H "Origin: https://board.aiver.me" \
+            -d '{
+              "webhook_secret": "${{ secrets.BOARD_WEBHOOK_SECRET }}",
+              "repo": "openscreen",
+              "title": "OpenScreen",
+              "desc": "繁體中文 AI 影像/影片生成平台（SaaS + Self-hosted）",
+              "col_title": "已啟動"
+            }'
